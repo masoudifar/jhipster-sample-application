@@ -1,0 +1,157 @@
+<div>
+  <div class="d-flex justify-content-center">
+    <div class="col-md-8">
+      @if (settingsForm.value.login) {
+        <h2 jhiTranslate="settings.title" [translateValues]="{ username: settingsForm.value.login }">
+          تنظیمات کاربر برای [<strong>{{ settingsForm.value.login }}</strong
+          >]
+        </h2>
+      }
+
+      @if (success()) {
+        <div class="alert alert-success" jhiTranslate="settings.messages.success"><strong>تنظیمات ذخیره شد!</strong></div>
+      }
+
+      <jhi-alert-error></jhi-alert-error>
+
+      @if (settingsForm.value.login) {
+        <form name="form" (ngSubmit)="save()" [formGroup]="settingsForm" novalidate>
+          <div class="mb-3">
+            <label class="form-label" for="firstName" jhiTranslate="settings.form.firstname">نام</label>
+            <input
+              type="text"
+              class="form-control"
+              id="firstName"
+              name="firstName"
+              placeholder="{{ 'settings.form.firstname.placeholder' | translate }}"
+              formControlName="firstName"
+              data-cy="firstname"
+            />
+
+            @let firstNameRef = settingsForm.get('firstName')!;
+            @if (firstNameRef.invalid && (firstNameRef.dirty || firstNameRef.touched)) {
+              <div>
+                @if (firstNameRef?.errors?.required) {
+                  <small class="form-text text-danger" jhiTranslate="settings.messages.validate.firstname.required"
+                    >نام شما مورد نیاز است.</small
+                  >
+                }
+
+                @if (firstNameRef?.errors?.minlength) {
+                  <small class="form-text text-danger" jhiTranslate="settings.messages.validate.firstname.minlength"
+                    >نام شما باید حداقل ۱ کرکتر باشد.</small
+                  >
+                }
+
+                @if (firstNameRef?.errors?.maxlength) {
+                  <small class="form-text text-danger" jhiTranslate="settings.messages.validate.firstname.maxlength"
+                    >نام شما نباید بیش از ۵۰ کرکتر باشد.</small
+                  >
+                }
+              </div>
+            }
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label" for="lastName" jhiTranslate="settings.form.lastname">نام خانوادگی</label>
+            <input
+              type="text"
+              class="form-control"
+              id="lastName"
+              name="lastName"
+              placeholder="{{ 'settings.form.lastname.placeholder' | translate }}"
+              formControlName="lastName"
+              data-cy="lastname"
+            />
+
+            @let lastNameRef = settingsForm.get('lastName')!;
+            @if (lastNameRef.invalid && (lastNameRef.dirty || lastNameRef.touched)) {
+              <div>
+                @if (lastNameRef?.errors?.required) {
+                  <small class="form-text text-danger" jhiTranslate="settings.messages.validate.lastname.required"
+                    >نام خانوادگی مورد نیاز است.</small
+                  >
+                }
+
+                @if (lastNameRef?.errors?.minlength) {
+                  <small class="form-text text-danger" jhiTranslate="settings.messages.validate.lastname.minlength"
+                    >نام خانوادگی باید حداقل ۱ کرکتر باشد.</small
+                  >
+                }
+
+                @if (lastNameRef?.errors?.maxlength) {
+                  <small class="form-text text-danger" jhiTranslate="settings.messages.validate.lastname.maxlength"
+                    >نام خانوادگی نباید بیش از ۵۰ کرکتر باشد.</small
+                  >
+                }
+              </div>
+            }
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label" for="email" jhiTranslate="global.form.email.label">رایانامه</label>
+            <input
+              type="email"
+              class="form-control"
+              id="email"
+              name="email"
+              placeholder="{{ 'global.form.email.placeholder' | translate }}"
+              formControlName="email"
+              data-cy="email"
+            />
+
+            @let emailRef = settingsForm.get('email')!;
+            @if (emailRef.invalid && (emailRef.dirty || emailRef.touched)) {
+              <div>
+                @if (emailRef?.errors?.required) {
+                  <small class="form-text text-danger" jhiTranslate="global.messages.validate.email.required"
+                    >آدرس ایمیل شما ضروری است</small
+                  >
+                }
+
+                @if (emailRef?.errors?.email) {
+                  <small class="form-text text-danger" jhiTranslate="global.messages.validate.email.invalid"
+                    >آدرس ایمیل شما نامعتبر است</small
+                  >
+                }
+
+                @if (emailRef?.errors?.minlength) {
+                  <small class="form-text text-danger" jhiTranslate="global.messages.validate.email.minlength"
+                    >آدرس ایمیل شما حداقل باید ۵ کرکتر باشد</small
+                  >
+                }
+
+                @if (emailRef?.errors?.maxlength) {
+                  <small class="form-text text-danger" jhiTranslate="global.messages.validate.email.maxlength"
+                    >آدرس ایمیل شما نمی‌تواند بیش از ۵۰ کرکتر باشد.</small
+                  >
+                }
+              </div>
+            }
+          </div>
+
+          @if (languages && languages.length > 0) {
+            <div class="mb-3">
+              <label for="langKey" jhiTranslate="settings.form.language">زبان</label>
+              <select class="form-control" id="langKey" name="langKey" formControlName="langKey" data-cy="langKey">
+                @for (language of languages; track $index) {
+                  <option [value]="language">{{ language | findLanguageFromKey }}</option>
+                }
+              </select>
+            </div>
+          }
+
+          <button
+            type="submit"
+            [disabled]="settingsForm.invalid"
+            class="btn btn-primary"
+            data-cy="submit"
+            jhiTranslate="settings.form.button"
+          >
+            ذخیره
+          </button>
+        </form>
+      }
+    </div>
+  </div>
+</div>
